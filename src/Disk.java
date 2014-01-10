@@ -7,7 +7,8 @@ import java.util.List;
  */
 public class Disk implements Comparable<Disk>
 {
-    private int myId;
+    public static final int GIGABYTE = 1000000;
+	private int myId;
     private int mySize;
     private int myCapacity;
     private List<Integer> myFiles;
@@ -18,7 +19,7 @@ public class Disk implements Comparable<Disk>
     public Disk ()
     {
         mySize = 0;
-        myCapacity = 1000000;
+        myCapacity = GIGABYTE;
         myFiles = new ArrayList<Integer>();
     }
 
@@ -27,10 +28,8 @@ public class Disk implements Comparable<Disk>
      */
     public Disk (int id)
     {
+    		this();
         myId = id;
-        mySize = 0;
-        myCapacity = 1000000;
-        myFiles = new ArrayList<Integer>();
     }
 
     /**
