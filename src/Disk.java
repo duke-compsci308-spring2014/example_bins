@@ -4,11 +4,13 @@ import java.util.List;
 
 /**
  * Represents a collection of files; how many it can hold is limited by its capacity.
+ * 
+ * @author rcd
  */
 public class Disk implements Comparable<Disk>
 {
     public static final int GIGABYTE = 1000000;
-	private int myId;
+    private int myId;
     private int mySize;
     private int myCapacity;
     private List<Integer> myFiles;
@@ -18,7 +20,7 @@ public class Disk implements Comparable<Disk>
      */
     public Disk ()
     {
-    		myId = 0;
+        myId = 0;
         mySize = 0;
         myCapacity = GIGABYTE;
         myFiles = new ArrayList<Integer>();
@@ -29,7 +31,7 @@ public class Disk implements Comparable<Disk>
      */
     public Disk (int id)
     {
-    		this();
+        this();
         myId = id;
     }
 
@@ -79,7 +81,7 @@ public class Disk implements Comparable<Disk>
     @Override
     public boolean equals (Object other)
     {
-        return (other != null && other instanceof Disk) && 
+        return (other != null && other instanceof Disk) &&
                (myId == ((Disk) other).myId);
     }
 
@@ -99,12 +101,9 @@ public class Disk implements Comparable<Disk>
         if (other != null)
         {
             int result = other.freeSpace() - freeSpace();
-            if (result == 0)
-                return myId - other.myId;
-            else 
-                return result;
+            if (result == 0) return myId - other.myId;
+            else             return result;
         }
-        else 
-            return -1;
+        else return -1;
     }
 }

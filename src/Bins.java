@@ -1,17 +1,20 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.PriorityQueue;
 import java.util.Scanner;
 
 
 /**
  * Runs a number of algorithms that try to fit files onto disks.
+ * 
+ * @author rcd
  */
 public class Bins
 {
+    private static final String WORST_FIT = "worst fit";
+    private static final String WORST_FIT_DECREASING = "worst fit decreasing";
+
     /**
      * Reads list of integer data from the given input.
      * 
@@ -28,63 +31,45 @@ public class Bins
         return results;
     }
 
-    private static int allocateFiles(List<Integer> data, PriorityQueue<Disk> pq) {
-		int diskId = 1;
-		int total = 0;
-        pq.add(new Disk(0));
-		for (Integer size : data)
-		{
-		    Disk d = pq.peek();
-		    if (d.freeSpace() >= size)
-		    {
-		        pq.poll();
-		        d.add(size);
-		        pq.add(d);
-		    }
-		    else
-		    {
-		        Disk d2 = new Disk(diskId);
-		        diskId++;
-		        d2.add(size);
-		        pq.add(d2);
-		    }
-		    total += size;
-		}
-		return total;
-	}
+    /**
+     * Given a collection of numbers, return their sum.
+     * 
+     * @param data collection of numbers to be summed
+     * @return total size of files in data
+     */
+    public int getTotalFileSize (List<Integer> data)
+    {
+        int total = 0;
+        for (Integer size : data)
+        {
+            total += size;
+        }
+        return total;
+    }
 
-	private static void printResults(PriorityQueue<Disk> pq, String description) {
-		//System.out.println();
-		System.out.println("\n" + description + " method");
-		System.out.println("number of pq used: " + pq.size());
-		PriorityQueue<Disk> pqcopy = new PriorityQueue<Disk>(pq);
-		while (!pqcopy.isEmpty())
-		{
-		    System.out.println(pqcopy.poll());
-		}
-		System.out.println();
-	}
-
-	/**
+    /**
      * The main program.
      */
     public static void main (String args[])
     {
-        Bins b = new Bins();
+        // all possible algorithms to compare --- add new instances here!
+        Allocator algortihmsToCompare[] = {
+            new Allocator(WORST_FIT),
+            new DecreasingAllocator(WORST_FIT_DECREASING)
+        };
+
         try
         {
+            Bins b = new Bins();
             Scanner input = new Scanner(new File(args[0]));
             List<Integer> data = b.readData(input);
+            System.out.println("total size = " + (1.0 * b.getTotalFileSize(data) / Disk.GIGABYTE) + "GB");
 
-            PriorityQueue<Disk> pq = new PriorityQueue<Disk>();
-            
-			int total = allocateFiles(data, pq);
-            System.out.println("total size = " + (1.0 * total / Disk.GIGABYTE) + "GB");
-            printResults(pq, "worst-fit");
-
-            Collections.sort(data, Collections.reverseOrder());
-            allocateFiles(data, pq);
-            printResults(pq, "worst-fit decreasing");
+            // run all algorithms
+            for (Allocator al : algortihmsToCompare)
+            {
+                al.doAlgorithm(data);
+            }
         }
         catch (FileNotFoundException e)
         {
