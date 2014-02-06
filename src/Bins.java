@@ -14,6 +14,7 @@ public class Bins
 {
     private static final String WORST_FIT = "worst fit";
     private static final String WORST_FIT_DECREASING = "worst fit decreasing";
+    
 
     /**
      * Reads list of integer data from the given input.

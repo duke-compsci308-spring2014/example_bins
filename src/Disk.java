@@ -10,6 +10,7 @@ import java.util.List;
 public class Disk implements Comparable<Disk>
 {
     public static final int GIGABYTE = 1000000;
+    private static int ourDiskId = 0;
     private int myId;
     private int mySize;
     private int myCapacity;
@@ -20,20 +21,12 @@ public class Disk implements Comparable<Disk>
      */
     public Disk ()
     {
-        myId = 0;
+        myId = ourDiskId++;
         mySize = 0;
         myCapacity = GIGABYTE;
         myFiles = new ArrayList<Integer>();
     }
 
-    /**
-     * Create an empty Disk with the given ID.
-     */
-    public Disk (int id)
-    {
-        this();
-        myId = id;
-    }
 
     /**
      * @return amount of free space available on this disk
